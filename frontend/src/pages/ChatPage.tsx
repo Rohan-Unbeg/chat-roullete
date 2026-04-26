@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { io, Socket } from "socket.io-client";
-import { Send, SkipForward, Users, Clock, Flag, X, Check, Volume2, VolumeX } from "lucide-react";
+import { Send, SkipForward, Users, Clock, Flag, Volume2, VolumeX } from "lucide-react";
 import { soundManager } from "../utils/soundEffects";
 
 
@@ -67,12 +67,10 @@ export default function ChatPage() {
 
   const [status, setStatus] = useState<"connecting" | "searching" | "matched">("connecting");
   const [onlineUsers, setOnlineUsers] = useState<number>(0);
-  const [partner, setPartner] = useState<{ nickname: string; id: string } | null>(null);
   const [roomId, setRoomId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [timeLeft, setTimeLeft] = useState<number>(300);
-  const [showMatchFlash, setShowMatchFlash] = useState(false);
   const [partnerAvatar, setPartnerAvatar] = useState("⚔️");
   const [myAvatar, setMyAvatar] = useState("🌸");
   const [currentQuote, setCurrentQuote] = useState(0);
@@ -81,9 +79,6 @@ export default function ChatPage() {
 
   // New feature states
   const [reported, setReported] = useState(false);
-  const [showExtendPrompt, setShowExtendPrompt] = useState(false);
-  const [partnerWantsExtend, setPartnerWantsExtend] = useState(false);
-  const [extendVoted, setExtendVoted] = useState(false);
   const [isMuted, setIsMuted] = useState(soundManager.isMuted());
 
 
@@ -152,18 +147,10 @@ export default function ChatPage() {
 
     newSocket.on("match_found", (data: { roomId: string; partnerNickname: string; partnerId: string }) => {
       setRoomId(data.roomId);
-      setPartner({ nickname: data.partnerNickname, id: data.partnerId });
       setStatus("matched");
       setReported(false);
-      setShowExtendPrompt(false);
-      setExtendVoted(false);
-      setPartnerWantsExtend(false);
       assignPartnerAvatar();
       soundManager.play('match');
-
-      // Trigger match flash
-      setShowMatchFlash(true);
-      setTimeout(() => setShowMatchFlash(false), 800);
 
       setMessages([{
         id: "sys-match",
@@ -215,9 +202,6 @@ export default function ChatPage() {
 
     // Extend chat: offer
     newSocket.on("extend_offer", () => {
-      setShowExtendPrompt(true);
-      setExtendVoted(false);
-      setPartnerWantsExtend(false);
       soundManager.play('alert');
     });
 
@@ -229,9 +213,6 @@ export default function ChatPage() {
 
     // Extend chat: extended successfully
     newSocket.on("chat_extended", (data: { newTime: number }) => {
-      setShowExtendPrompt(false);
-      setExtendVoted(false);
-      setPartnerWantsExtend(false);
       setTimeLeft(data.newTime);
       setMessages((prev) => [...prev, {
         id: `sys-extended-${Date.now()}`,
@@ -253,7 +234,6 @@ export default function ChatPage() {
     });
 
     newSocket.on("partner_left", () => {
-      setShowExtendPrompt(false);
       setMessages((prev) => [...prev, {
         id: "sys-left",
         senderId: "system",
@@ -268,7 +248,6 @@ export default function ChatPage() {
     });
 
     newSocket.on("chat_ended", (reason: string) => {
-      setShowExtendPrompt(false);
       setMessages((prev) => [...prev, {
         id: "sys-end",
         senderId: "system",
@@ -294,14 +273,10 @@ export default function ChatPage() {
       currentSocket.emit("leave_chat", roomId);
     }
     setStatus("searching");
-    setPartner(null);
     setRoomId(null);
     setMessages([]);
     setTimeLeft(300);
     setReported(false);
-    setShowExtendPrompt(false);
-    setExtendVoted(false);
-    setPartnerWantsExtend(false);
     currentSocket.emit("join_queue", { nickname });
   };
 
@@ -334,15 +309,6 @@ export default function ChatPage() {
     socket.emit("report_user", { roomId });
   };
 
-  const handleExtendVote = (accept: boolean) => {
-    if (!socket || !roomId) return;
-    if (accept) {
-      socket.emit("extend_vote", roomId);
-      setExtendVoted(true);
-    } else {
-      socket.emit("extend_decline", roomId);
-      setShowExtendPrompt(false);
-    }
   };
 
   const formatTime = (seconds: number) => {
