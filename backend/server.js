@@ -9,6 +9,7 @@ require('dotenv').config();
 
 // Production CORS: Allow your frontend URL here
 const app = express();
+app.set('trust proxy', 1); // Required for Render/Vercel proxies
 app.use(cors({
   origin: "*", // In production, you can restrict this to your actual domain
   methods: ["GET", "POST"]

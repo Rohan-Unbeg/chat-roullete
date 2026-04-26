@@ -17,7 +17,7 @@ export default function LandingPage() {
   const [searchParams] = useSearchParams();
   const isAdmin = searchParams.get("admin") === "true";
   
-  const [isLaunched, setIsLaunched] = useState(isAdmin);
+  const [isLaunched, setIsLaunched] = useState(true); // SITE IS NOW LIVE
   const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
 
   const navigate = useNavigate();
