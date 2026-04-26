@@ -1,0 +1,449 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== ROOT VARIABLES ===== */
+:root {
+  --background: #0a0618;
+  --foreground: #ededed;
+  --anime-primary: #ff007f;
+  --anime-secondary: #7000ff;
+  --anime-accent: #00f0ff;
+}
+
+/* ===== BASE RESET ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: 'Outfit', Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  width: 100%;
+  position: relative;
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 0%, rgba(112, 0, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba(255, 0, 127, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 240, 255, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Speed lines overlay */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 98%,
+      rgba(255, 0, 127, 0.03) 98%,
+      rgba(255, 0, 127, 0.03) 100%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 98%,
+      rgba(112, 0, 255, 0.02) 98%,
+      rgba(112, 0, 255, 0.02) 100%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ===== GLASS PANEL — UPGRADED ===== */
+.glass-panel {
+  background: rgba(12, 8, 30, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 0, 127, 0.15);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(255, 0, 127, 0.3);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(255, 0, 127, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ===== NEON TEXT — MULTI-LAYER ===== */
+.neon-text {
+  text-shadow:
+    0 0 7px rgba(255, 0, 127, 0.8),
+    0 0 20px rgba(255, 0, 127, 0.5),
+    0 0 40px rgba(255, 0, 127, 0.3),
+    0 0 80px rgba(255, 0, 127, 0.1);
+}
+
+.neon-text-cyan {
+  text-shadow:
+    0 0 7px rgba(0, 240, 255, 0.8),
+    0 0 20px rgba(0, 240, 255, 0.5),
+    0 0 40px rgba(0, 240, 255, 0.3);
+}
+
+/* ===== ANIME BUTTON ===== */
+.anime-btn {
+  position: relative;
+  background: linear-gradient(135deg, var(--anime-primary), var(--anime-secondary));
+  color: white;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.anime-btn::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg);
+  transition: transform 0.6s ease;
+}
+
+.anime-btn:hover::before {
+  transform: rotate(45deg) translate(100%, 100%);
+}
+
+.anime-btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 4px 20px rgba(255, 0, 127, 0.4),
+    0 0 40px rgba(112, 0, 255, 0.2);
+}
+
+.anime-btn:active {
+  transform: scale(0.97);
+}
+
+/* ===== MANGA CHAT BUBBLE (sent) ===== */
+.manga-bubble-me {
+  background: linear-gradient(135deg, #ff007f, #7000ff);
+  color: white;
+  border-radius: 18px 4px 18px 18px;
+  position: relative;
+  box-shadow: 0 2px 12px rgba(255, 0, 127, 0.3);
+}
+
+/* ===== MANGA CHAT BUBBLE (received) ===== */
+.manga-bubble-partner {
+  background: rgba(20, 15, 50, 0.8);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  color: #e0e0e0;
+  border-radius: 4px 18px 18px 18px;
+  position: relative;
+  box-shadow: 0 2px 12px rgba(0, 240, 255, 0.1);
+}
+
+/* ===== SYSTEM MESSAGE — ANIME TITLE CARD ===== */
+.anime-system-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 0.7rem;
+  color: rgba(168, 85, 247, 0.9);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .anime-system-msg {
+    font-size: 0.6rem;
+    gap: 8px;
+  }
+}
+
+.anime-system-msg::before,
+.anime-system-msg::after {
+  content: '';
+  flex: 1;
+  min-width: 10px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(168, 85, 247, 0.5),
+    transparent
+  );
+}
+
+@media (max-width: 400px) {
+  .anime-system-msg::before,
+  .anime-system-msg::after {
+    display: none;
+  }
+}
+
+/* ===== SUMMONING CIRCLE ===== */
+.summoning-circle {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.summoning-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.summoning-ring:nth-child(1) {
+  border-top-color: var(--anime-primary);
+  border-bottom-color: var(--anime-primary);
+  animation: spin 4s linear infinite;
+}
+
+.summoning-ring:nth-child(2) {
+  inset: 15px;
+  border-left-color: var(--anime-secondary);
+  border-right-color: var(--anime-secondary);
+  animation: spin 3s linear infinite reverse;
+}
+
+.summoning-ring:nth-child(3) {
+  inset: 30px;
+  border-top-color: var(--anime-accent);
+  border-bottom-color: var(--anime-accent);
+  animation: spin 2s linear infinite;
+}
+
+.summoning-core {
+  position: absolute;
+  inset: 50px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 0, 127, 0.3),
+    rgba(112, 0, 255, 0.2),
+    transparent
+  );
+  animation: summon-pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes summon-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* ===== KANJI RAIN ===== */
+.kanji-rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.kanji-char {
+  position: absolute;
+  font-size: 1.5rem;
+  opacity: 0;
+  animation: kanji-fall linear infinite;
+  color: rgba(112, 0, 255, 0.15);
+  font-family: 'Zen Dots', serif;
+  text-shadow: 0 0 10px rgba(112, 0, 255, 0.3);
+  user-select: none;
+}
+
+@keyframes kanji-fall {
+  0% {
+    transform: translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.3; }
+  90% { opacity: 0.3; }
+  100% {
+    transform: translateY(calc(100vh + 100px)) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ===== TIMER DRAMATIC MODE ===== */
+.timer-critical {
+  position: relative;
+}
+
+.timer-critical::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 60, 60, 0.6);
+  animation: timer-ring-pulse 1s ease-in-out infinite;
+}
+
+@keyframes timer-ring-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ===== MATCH FLASH OVERLAY ===== */
+.match-flash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255, 0, 127, 0.4), transparent 70%);
+  z-index: 50;
+  animation: flash-in 0.8s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes flash-in {
+  0% { opacity: 0; }
+  30% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ===== CUSTOM SCROLLBAR ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--anime-primary), var(--anime-secondary));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--anime-accent), var(--anime-primary));
+}
+
+/* ===== FLOATING PARTICLES ===== */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--anime-primary);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particle-float 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  20% { opacity: 0.6; }
+  80% { opacity: 0.6; }
+  100% { transform: translateY(-200px) translateX(50px); opacity: 0; }
+}
+
+/* ===== ROTATING BORDER (for input form) ===== */
+.rotating-border {
+  position: relative;
+}
+
+.rotating-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 14px;
+  background: conic-gradient(
+    from var(--border-angle, 0deg),
+    var(--anime-primary),
+    var(--anime-secondary),
+    var(--anime-accent),
+    var(--anime-secondary),
+    var(--anime-primary)
+  );
+  z-index: -1;
+  opacity: 0.5;
+  animation: rotate-border 4s linear infinite;
+  filter: blur(4px);
+}
+
+@keyframes rotate-border {
+  0% { --border-angle: 0deg; }
+  100% { --border-angle: 360deg; }
+}
+
+/* For browsers that don't support @property, use a transform fallback */
+@supports not (background: conic-gradient(from 0deg, red, blue)) {
+  .rotating-border::before {
+    background: linear-gradient(135deg, var(--anime-primary), var(--anime-secondary), var(--anime-accent));
+  }
+}
+
+@property --border-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* ===== TILT CARD ===== */
+.tilt-card {
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+}
+
+.tilt-card:hover {
+  transform: perspective(800px) rotateX(2deg) rotateY(-2deg) scale(1.02);
+}
+
+/* ===== MISC UTILITIES ===== */
+.text-gradient-anime {
+  background: linear-gradient(135deg, var(--anime-primary), var(--anime-accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.anime-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 0, 127, 0.4),
+    rgba(112, 0, 255, 0.4),
+    transparent
+  );
+}
