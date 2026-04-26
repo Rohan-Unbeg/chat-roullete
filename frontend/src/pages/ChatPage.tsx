@@ -208,7 +208,7 @@ export default function ChatPage() {
 
     // Extend chat: partner voted yes
     newSocket.on("partner_wants_extend", () => {
-      setPartnerWantsExtend(true);
+      // Logic removed as extend feature is disabled
     });
 
     // Extend chat: extended successfully
@@ -307,8 +307,6 @@ export default function ChatPage() {
   const handleReport = () => {
     if (!socket || !roomId || reported) return;
     socket.emit("report_user", { roomId });
-  };
-
   };
 
   const formatTime = (seconds: number) => {
